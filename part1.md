@@ -1,6 +1,6 @@
 # Creating a Trivia App with Ignite CLI - Part I (updated)
 
-This is an updated version of Robin Heinze's excellent blog post on the [ignite CLI](https://shift.infinite.red/creating-a-trivia-app-with-ignite-bowser-part-1-1987cc6e93a1). This post is copied directly from her work with only slight changes reflecting the updated changes.
+This is an updated version of Robin Heinze's excellent [blog](https://shift.infinite.red/creating-a-trivia-app-with-ignite-bowser-part-1-1987cc6e93a1) post on the [ignite CLI](https://github.com/infinitered/ignite). This post is copied directly from her work with only slight changes reflecting the updated Ignite version.
 
 In this post, we’ll go through the steps of creating the data model for a trivia app to illustrate how to use our stack with real examples.
 
@@ -20,7 +20,7 @@ ignite new Trivia
 
 After Ignite finishes running, run `npx react-native run-ios` or `npx react-native run android` and you should see something like this:
 
-<PICTURE HERE>
+![Ignite Main](https://miro.medium.com/max/1400/1*loYwHRaQotXoRb0AHVI7Qg.png)
 
 ## Defining Our Models
 
@@ -47,7 +47,7 @@ question.test.ts
 
 We won’t be writing unit tests quite yet, so we’ll focus on `question.ts`
 
-<QUESTION.TS PIC>
+![question.ts](https://github.com/clarkgrg/Trivia/blob/main/assets/question.ts.png?raw=true)
 
 This file has a couple different parts. First there’s `QuestionModel`, which is the heart of this file. It’s the MST model definition. Each model instance has properties, like a regular JS object, but it also has views (computed values), and actions.
 
@@ -79,7 +79,7 @@ Then, we have some string properties: `category`, `question`, and `correctAnswer
 
 We also have a property `incorrectAnswers`, which is an array of strings. Instead of `types.maybe()`, we’ve used `types.optional()`. This allows us to not specify a value for this property, but instead of being undefined, it will take a default value of `[]`.
 
-Finally, we have `type` and `difficulty` which is are both enumerations. This forces the value to be one of a predetermined list of values, in the case strings.
+Finally, we have `type` and `difficulty` which is are both enumerations. This forces the value to be one of a predetermined list of values, in this case strings.
 
 ### Question Store
 
@@ -114,7 +114,7 @@ Okay, we have some models describing the shape of data that we want. Now let’s
 
 ### API Service
 
-Bowser comes with an API service all ready to customize, so let’s customize it.
+Ignite comes with an API service all ready to customize, so let’s customize it.
 
 Changes to `api-config.ts`
 
@@ -207,7 +207,7 @@ It’s time to make our first MST `action`.
 But first, let’s add one thing to our Question Store model.
 
 ```Javascript
-import { withEnvironment } from "../"
+import { withEnvironment } from "../extensions/with-environment"
 
 export const QuestionStoreModel = types
   .model("QuestionStore")
@@ -222,6 +222,36 @@ export const QuestionStoreModel = types
 Notice we’ve added the line `.extend(withEnvironment)`. Extensions are a neat way of sharing commonly used patterns in MST. In this case, it adds a view to the model called environment which calls MST’s getEnv function, and returns the contents of our environment (located in `app/models/environment.ts`). Check out the [docs](https://mobx-state-tree.js.org/concepts/dependency-injection) to learn more about getEnv and dependency injection in MST.
 
 Now, let’s get back to our action.
+
+```Javascript
+/**
+ * Model description here for TypeScript hints.
+ */
+export const QuestionStoreModel = types
+  .model("QuestionStore")
+  .props({
+    questions: types.optional(types.array(QuestionModel), []),
+  })
+  .extend(withEnvironment)
+  .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .actions((self) => ({
+    saveQuestions: (questionSnapshots: QuestionSnapshot[]) => {
+      const questionModels: Question[] = questionSnapshots.map((c) => QuestionModel.create(c)) // create model instances from the plain objects
+      self.questions.replace(questionModels) // Replace the existing data with the new data
+    },
+  }))
+  .actions((self) => ({
+    getQuestions: flow(function* () {
+      const result: GetQuestionsResult = yield self.environment.api.getQuestions()
+
+      if (result.kind === "ok") {
+        self.saveQuestions(result.questions)
+      } else {
+        __DEV__ && console.tron.log(result.kind)
+      }
+    }),
+  })) // eslint-disable-line @typescript-eslint/no-unused-vars
+```
 
 We’ve added two actions:
 

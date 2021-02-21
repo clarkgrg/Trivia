@@ -1,8 +1,8 @@
-# Creating a Trivia App with Ignite Bowser — Part II (updated)
+# Creating a Trivia App with Ignite CLI — Part II (updated)
 
-This is an updated version of Robin Heinze's excellent blog post on the [ignite CLI](https://shift.infinite.red/creating-a-trivia-app-with-ignite-bowser-part-ii-a286a978d0c8). This post is copied directly from her work with only slight changes reflecting the updated changes.
+This is an updated version of Robin Heinze's excellent [blog](https://shift.infinite.red/creating-a-trivia-app-with-ignite-bowser-part-ii-a286a978d0c8) post on the [ignite CLI](https://github.com/infinitered/ignite). This post is copied directly from her work with only slight changes reflecting the updated Ignite version.
 
-In Part I, we setup a data model for our Trivia App based on [Open Trivia DB](https://opentdb.com/) and built using Ignite Bowser. In Part II, we’re going to hook up some screens to complete the data lifecycle!
+In Part I, we setup a data model for our Trivia App based on [Open Trivia DB](https://opentdb.com/) and built using Ignite CLI. In Part II, we’re going to hook up some screens to complete the data lifecycle!
 
 First things first, we need a screen. Let’s generate one:
 
@@ -16,7 +16,7 @@ Now we have a blank screen called `question-screen.tsx`. Add this screen to `app
 export * from "./question/question-screen"
 ```
 
-Let’s replace the welcome and demo screens that come with Bowser with this new screen. Now our `app/navigation/main-navigator.tsx` should look like this:
+Let’s replace the welcome and demo screens that come with Ignite CLI with this new screen. Now our `app/navigation/main-navigator.tsx` should look like this:
 
 ```Javascript
 import { createStackNavigator } from "@react-navigation/stack"
@@ -122,7 +122,7 @@ export const QuestionScreen = observer(function QuestionScreen() {
 
 When we run the app, it looks like this:
 
-<QUESTIONS SCREEN>
+![question.ts](https://github.com/clarkgrg/Trivia/blob/main/assets/question-screen.png?raw=true)
 
 ## Adding Data
 
@@ -195,7 +195,7 @@ npm i --save lodash.shuffle
 
 When we run the app, the screen looks like this:
 
-<SCREEN PIC HERE>
+![questions.png](https://github.com/clarkgrg/Trivia/blob/main/assets/questions.png?raw=true)
 
 Here is our udpated `question-screen.tsx`
 
@@ -415,8 +415,8 @@ Here’s what we did:
 
 Here’s our app in action!
 
-<APP PICS HERE>
+![Trivia App](https://miro.medium.com/max/800/1*w6yJP9o9HJMnj8EuOuBsaA.gif)
 
-🎉 And there you have it! A basic Trivia app built with Ignite Bowser, using MobX State Tree and TypeScript.
+🎉 And there you have it! A basic Trivia app built with Ignite CLI, using MobX State Tree and TypeScript.
 
 You can view the complete source code here: https://github.com/robinheinze/ignite-trivia
