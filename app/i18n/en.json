@@ -7,6 +7,9 @@
   "errors": {
     "invalidEmail": "Invalid email address."
   },
+  "questionScreen": {
+    "header": "Questions"
+  },
   "welcomeScreen": {
     "poweredBy": "POWERED BY IGNITE",
     "readyForLaunch": "Ready for launch.",

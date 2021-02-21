@@ -22,6 +22,18 @@
  * Feel free to delete this block.
  */
 
+export enum sizes {
+  none = 0,
+  tiny = 1,
+  smaller = 2,
+  small = 3,
+  medium = 4,
+  mediumPlus = 5,
+  large = 6,
+  huge = 7,
+  massive = 8,
+}
+
 /**
  * The available spacing.
  *
