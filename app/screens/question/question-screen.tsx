@@ -4,7 +4,7 @@ import { Alert, FlatList, TextStyle, TouchableOpacity, View, ViewStyle } from "r
 import { RadioButtons } from "react-native-radio-buttons"
 import { Screen, Text, Button } from "../../components"
 import { color, spacing, sizes } from "../../theme"
-import { useStores } from "../../models"
+import { useStores } from "../../models/root-store/root-store-context"
 import { Question } from "../../models/question/question"
 import { decodeHTMLEntities } from "../../utils/html-decode"
 
